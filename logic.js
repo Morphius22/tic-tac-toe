@@ -17,14 +17,23 @@ const gameBoard = (() => {
     };
 
     const displayBoard = () => {
-
         for (let i = 0; i < 9; i++) {
             const boardGrid = document.querySelector(".board");
             const placeDiv = document.createElement('div');
             boardGrid.appendChild(placeDiv);
             placeDiv.classList.add('square')
+            placeDiv.setAttribute('data-row', i);
         };
     };
+
+    const clickAble = () => {
+        boardDivs = document.querySelectorAll('.square');
+        boardDivs.forEach(div => {
+            div.addEventListener('click', e => {
+             board.push(div.getAttribute())
+            })
+        }); 
+    }
 
     // const displaySymbols = (board) => {
     //     boardDivs = document.querySelectorAll('.square');
@@ -45,17 +54,18 @@ const gameBoard = (() => {
     return {
         displayBoard,
         getBoard,
+        clickAble,
         // displaySymbols,
     }
 })();
 
 
 gameBoard.displayBoard();
-
+gameBoard.clickAble();
 
 //board is generated without any positions in it (done)
 
-//event listeners are set up on each board position
+//event listeners are set up on each board position (done)
 
 //when an event listener is clicked, the position number 
 //is added to the array as a new object with a data attribute
