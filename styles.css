@@ -1,0 +1,22 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: repeat(3, 150px);
+    grid-gap: 0px;
+    justify-content: center;
+    align-items: center;
+}
+
+p {
+    border: 1px solid hotpink;
+    margin: 0px;
+    text-align: center;
+    height: 150px;
+    width: 150px;
+    justify-self: center;
+    align-self: center;
+}
+
+h1 {
+    text-align: center;
+}
