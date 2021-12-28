@@ -34,9 +34,7 @@ const gameBoard = (() => {
     };
 
     const eraseSymbols = () => {
-        allSymbols = document.querySelectorAll('.symbol');
-        console.log(allSymbols)
-        allSymbols.forEach(item => item.remove());
+        document.querySelectorAll('.symbol').forEach(item => item.remove());
     }
 
     const updateBoard = () => {
@@ -50,27 +48,6 @@ const gameBoard = (() => {
             })
         }); 
     };
-
-
-    // const updateBoard {
-
-    // }
-
-    // const displaySymbols = (board) => {
-    //     boardDivs = document.querySelectorAll('.square');
-    //     boardDivs.forEach((div, i) => {
-    //         //if the current loop matches the data attribute of the array position, then add symbol. If not, continue.
-    //         if () {
-    //             //place symbol into the div
-    //             const placeSymbol = document.createElement('p');
-    //             placeSymbol.textContent = board.index;
-    //             placeSymbol.classList.add('symbol');
-    //             div.appendChild(placeSymbol);
-    //         } else () {
-    //             continue
-    //         }
-    //     })
-    // }
 
     return {
         displayBoard,
