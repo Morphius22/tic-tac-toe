@@ -11,10 +11,7 @@ const Player = (name, symbol) => {
 
 const gameBoard = (() => {
 
-    const getBoard = () => {
-        let board = ['x','o','x','o','x','o','x','o','x'];
-        return board;
-    };
+    const board = ['x','o','x','o','x','o','x','o','x'];
 
     const displayBoard = () => {
         for (let i = 0; i < 9; i++) {
@@ -26,14 +23,19 @@ const gameBoard = (() => {
         };
     };
 
-    const clickAble = () => {
+    const updateBoard = () => {
         boardDivs = document.querySelectorAll('.square');
         boardDivs.forEach(div => {
             div.addEventListener('click', e => {
-             board.push(div.getAttribute())
+             board.push({symbol: 'X', player: '2', position: div.getAttribute("data-row")})
+             console.log(board)
             })
         }); 
-    }
+    };
+
+    // const updateBoard {
+
+    // }
 
     // const displaySymbols = (board) => {
     //     boardDivs = document.querySelectorAll('.square');
@@ -53,15 +55,15 @@ const gameBoard = (() => {
 
     return {
         displayBoard,
-        getBoard,
-        clickAble,
+        updateBoard,
+        board,
         // displaySymbols,
     }
 })();
 
 
 gameBoard.displayBoard();
-gameBoard.clickAble();
+gameBoard.updateBoard();
 
 //board is generated without any positions in it (done)
 
