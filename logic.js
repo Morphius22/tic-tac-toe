@@ -11,7 +11,7 @@ const Player = (name, symbol) => {
 
 const gameBoard = (() => {
 
-    const board = ['x','o','x','o','x','o','x','o','x'];
+    const board = [];
 
     const displayBoard = () => {
         for (let i = 0; i < 9; i++) {
@@ -23,15 +23,34 @@ const gameBoard = (() => {
         };
     };
 
+    const placeSymbol = (board) => {
+        board.forEach(object => {
+            const placeSymbol = document.createElement('p');
+            const div = document.querySelector("[data-row=" + CSS.escape(object.position) + "]");
+            placeSymbol.textContent = object.symbol;
+            placeSymbol.classList.add('symbol');
+            div.appendChild(placeSymbol);
+        })
+    };
+
+    const eraseSymbols = () => {
+        allSymbols = document.querySelectorAll('.symbol');
+        console.log(allSymbols)
+        allSymbols.forEach(item => item.remove());
+    }
+
     const updateBoard = () => {
         boardDivs = document.querySelectorAll('.square');
         boardDivs.forEach(div => {
             div.addEventListener('click', e => {
              board.push({symbol: 'X', player: '2', position: div.getAttribute("data-row")})
-             console.log(board)
+             console.log(board);
+             eraseSymbols();
+             placeSymbol(board);
             })
         }); 
     };
+
 
     // const updateBoard {
 
@@ -57,10 +76,15 @@ const gameBoard = (() => {
         displayBoard,
         updateBoard,
         board,
+        placeSymbol,
+        eraseSymbols,
         // displaySymbols,
     }
 })();
 
+// const gameController = () => {
+//     //eventually add in functions below
+// }
 
 gameBoard.displayBoard();
 gameBoard.updateBoard();
