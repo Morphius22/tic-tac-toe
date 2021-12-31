@@ -37,17 +37,47 @@ const gameBoard = (() => {
         document.querySelectorAll('.symbol').forEach(item => item.remove());
     }
 
+    const eraseEvents = () => {
+        document.querySelectorAll('.square').forEach(div => div.removeEventListener('click', myClickHandler));
+    }
+
+    const myClickHandler = (e) => {
+        board.push({symbol: 'X', player: '2', position: e.currentTarget.dataset.row})
+        console.log(board);
+        eraseSymbols();
+        placeSymbol(board);
+    }
+
     const updateBoard = () => {
         boardDivs = document.querySelectorAll('.square');
         boardDivs.forEach(div => {
-            div.addEventListener('click', e => {
-             board.push({symbol: 'X', player: '2', position: div.getAttribute("data-row")})
-             console.log(board);
-             eraseSymbols();
-             placeSymbol(board);
-            })
+            div.addEventListener('click', myClickHandler, {once : true})
         }); 
     };
+
+
+    // const updateBoard = () => {
+    //     boardDivs = document.querySelectorAll('.square');
+    //     boardDivs.forEach(div => {
+    //         div.addEventListener('click', e => {
+    //          board.push({symbol: 'X', player: '2', position: div.getAttribute("data-row")})
+    //          console.log(board);
+    //          eraseSymbols();
+    //          placeSymbol(board);
+    //         }, {once : true})
+    //     }); 
+    // };
+
+    const resetBoard = () => {
+        resetButton = document.querySelector('#reset');
+        resetButton.addEventListener('click', e => {
+            eraseSymbols();
+            eraseEvents();
+            board.length = 0;
+            updateBoard();
+            placeSymbol(board);
+        })
+    }
 
     return {
         displayBoard,
@@ -55,6 +85,8 @@ const gameBoard = (() => {
         board,
         placeSymbol,
         eraseSymbols,
+        resetBoard,
+        eraseEvents,
         // displaySymbols,
     }
 })();
@@ -65,6 +97,9 @@ const gameBoard = (() => {
 
 gameBoard.displayBoard();
 gameBoard.updateBoard();
+gameBoard.resetBoard();
+
+
 
 //board is generated without any positions in it (done)
 
