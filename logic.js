@@ -42,7 +42,18 @@ const gameBoard = (() => {
     }
 
     const myClickHandler = (e) => {
-        board.push({symbol: 'X', player: '2', position: e.currentTarget.dataset.row})
+        if (board.length == 0) {
+            board.push({symbol: humanPlayer.getSymbol(), player: humanPlayer.getName(), position: e.currentTarget.dataset.row})
+        } 
+        
+        else if (board[board.length-1].symbol == "X") {
+            board.push({symbol: computerPlayer.getSymbol(), player: computerPlayer.getName(), position: e.currentTarget.dataset.row})
+        } 
+        
+        else {
+            board.push({symbol: humanPlayer.getSymbol(), player: humanPlayer.getName(), position: e.currentTarget.dataset.row})
+        };
+
         console.log(board);
         eraseSymbols();
         placeSymbol(board);
@@ -79,6 +90,10 @@ const gameBoard = (() => {
         })
     }
 
+    const checkForWinner = () => {
+
+    }
+
     return {
         displayBoard,
         updateBoard,
@@ -95,6 +110,8 @@ const gameBoard = (() => {
 //     //eventually add in functions below
 // }
 
+const computerPlayer = Player('Computer', 'O');
+const humanPlayer = Player('Player', 'X');
 gameBoard.displayBoard();
 gameBoard.updateBoard();
 gameBoard.resetBoard();
