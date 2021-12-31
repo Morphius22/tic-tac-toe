@@ -35,3 +35,9 @@ h1 {
 #reset {
     padding: 10px 10px;
 }
+
+.winner {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
