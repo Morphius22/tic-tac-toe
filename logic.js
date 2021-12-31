@@ -12,6 +12,30 @@ const Player = (name, symbol) => {
 const gameBoard = (() => {
 
     const board = [];
+    let playFriendToggle = true;
+    let playComputerToggle = false;
+
+    const gameSetup = () => {
+        playFriendsButton = document.querySelector('#playFriends')
+        playComputerButton = document.querySelector('#playComputers')
+
+        playFriendsButton.addEventListener('click', playFriends)
+        playComputerButton.addEventListener('click', playComputer)
+    }
+
+    const playFriends = () => {
+        playFriendToggle = true;
+        console.log ('this is play friend ' + playFriendToggle)
+        playComputerToggle = false;
+        console.log ('this is play comp ' + playComputerToggle)
+    }
+
+    const playComputer = () => {
+        playComputerToggle = true;
+        console.log ('this is play comp ' + playComputerToggle)       
+        playFriendToggle = false;
+        console.log ('this is play friend ' + playFriendToggle)
+    }
 
     const displayBoard = () => {
         for (let i = 0; i < 9; i++) {
@@ -169,6 +193,7 @@ const gameBoard = (() => {
         resetBoard,
         eraseEvents,
         checkForWinner,
+        gameSetup,
         // displaySymbols,
     }
 })();
@@ -181,6 +206,7 @@ const computerPlayer = Player('Computer', 'O');
 const humanPlayer = Player('Player', 'X');
 console.log(computerPlayer);
 console.log(humanPlayer);
+gameBoard.gameSetup();
 gameBoard.displayBoard();
 gameBoard.updateBoard();
 gameBoard.resetBoard();
