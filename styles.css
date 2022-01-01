@@ -52,6 +52,6 @@ button {
     background-color: hotpink;
 }
 
-#playfriends {
-
+#playfriends:focus {
+    background-color: hotpink;
 }
