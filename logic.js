@@ -1,4 +1,4 @@
-
+//creates a new player
 const Player = (name, symbol) => {
     const getName = () => name;
     const getSymbol = () => symbol;
@@ -9,12 +9,25 @@ const Player = (name, symbol) => {
     }
 }
 
+//contains all of the functions involved in running the game
 const gameBoard = (() => {
 
+    //board that will determine placements
     const board = [];
+
+    //possible moves the computer can make
+    let possibleMoves = ['0','1','2','3','4','5','6','7','8']
+
+    //holder for the move the computer makess
+    let positionHolder = null;
+
+    //true if the player selects play friends
     let playFriendToggle = true;
+
+    //true if the player selects play computer
     let playComputerToggle = false;
 
+    //assigns click listners to the game type buttons
     const gameSetup = () => {
         playFriendsButton = document.querySelector('#playFriends')
         playComputerButton = document.querySelector('#playComputers')
@@ -23,20 +36,40 @@ const gameBoard = (() => {
         playComputerButton.addEventListener('click', playComputer)
     }
 
+    //initializes all logic for playing against friends
     const playFriends = () => {
         playFriendToggle = true;
         console.log ('this is play friend ' + playFriendToggle)
         playComputerToggle = false;
         console.log ('this is play comp ' + playComputerToggle)
+        eraseSymbols();
+        changeGame();
+        board.length = 0;
+        updateBoard();
+        placeSymbol(board);
+        winnerText = document.querySelector('.winner')
+        winnerText.remove()
     }
 
+    //initializes all logic for playing against a computerr 
     const playComputer = () => {
         playComputerToggle = true;
         console.log ('this is play comp ' + playComputerToggle)       
         playFriendToggle = false;
         console.log ('this is play friend ' + playFriendToggle)
+        possibleMoves = ['0','1','2','3','4','5','6','7','8']
+        eraseSymbols();
+        changeGame();
+        board.length = 0;
+        updateBoard();
+        placeSymbol(board);
+        console.log('play friend toggle is:')
+        console.log(playFriendToggle == false)
+        winnerText = document.querySelector('.winner')
+        winnerText.remove()
     }
 
+    //creates the nine divs that form the tic tac toe board
     const displayBoard = () => {
         for (let i = 0; i < 9; i++) {
             const boardGrid = document.querySelector(".board");
@@ -47,6 +80,7 @@ const gameBoard = (() => {
         };
     };
 
+    //place symbols on the board based upon objects in the board arrays position
     const placeSymbol = (board) => {
         board.forEach(object => {
             const placeSymbol = document.createElement('p');
@@ -57,15 +91,49 @@ const gameBoard = (() => {
         })
     };
 
+    //erase all symbols on the board
     const eraseSymbols = () => {
         document.querySelectorAll('.symbol').forEach(item => item.remove());
     }
 
-    const eraseEvents = () => {
-        document.querySelectorAll('.square').forEach(div => div.removeEventListener('click', myClickHandler));
+    //add the correct event listeners for the game type the player selects (computer vs friends)
+    const changeGame = () => {
+        if (playFriendToggle == false) {
+            document.querySelectorAll('.square').forEach(div => div.removeEventListener('click', playFriendsClickHandler));
+        } else {
+            document.querySelectorAll('.square').forEach(div => div.removeEventListener('click', playComputerClickHandler));
+        } 
     }
 
-    const myClickHandler = (e) => {
+    //erase all events from the div's
+    const eraseEvents = () => {
+        document.querySelectorAll('.square').forEach(div => div.removeEventListener('click',playFriendsClickHandler));
+        document.querySelectorAll('.square').forEach(div => div.removeEventListener('click',playComputerClickHandler));
+    }
+
+    //when the player picks a square, the computer will pick an open square immediatly after.
+    const playComputerClickHandler = (e) => {
+        board.push({symbol: humanPlayer.getSymbol(), player: humanPlayer.getName(), position: e.currentTarget.dataset.row})
+        index = possibleMoves.indexOf(e.currentTarget.dataset.row);
+        console.log(index)
+        possibleMoves.splice(index,1);
+        console.log(possibleMoves);
+
+        positionHolder = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
+        board.push({symbol: computerPlayer.getSymbol(), player: computerPlayer.getName(), position: positionHolder})
+        index = possibleMoves.indexOf(positionHolder);
+        console.log(index)
+        possibleMoves.splice(index,1);
+        console.log(possibleMoves);
+
+        console.log(board);
+        eraseSymbols();
+        placeSymbol(board);
+        checkForWinner();
+    }
+
+    //each click adds a new object to the board array. Alternating between computer and player.
+    const playFriendsClickHandler = (e) => {
         if (board.length == 0) {
             board.push({symbol: humanPlayer.getSymbol(), player: humanPlayer.getName(), position: e.currentTarget.dataset.row})
         } 
@@ -84,13 +152,21 @@ const gameBoard = (() => {
         checkForWinner();
     }
 
+    //if playing friends, remove the computer listeners and add friends listeners. Reverse as well.
     const updateBoard = () => {
         boardDivs = document.querySelectorAll('.square');
         boardDivs.forEach(div => {
-            div.addEventListener('click', myClickHandler, {once : true})
+            if (playFriendToggle == true && playComputerToggle == false) {
+                removeEventListener('click', playComputerClickHandler)
+                div.addEventListener('click', playFriendsClickHandler, {once : true})
+            } else {
+                removeEventListener('click', playFriendsClickHandler)
+                div.addEventListener('click', playComputerClickHandler, {once : true})
+            }
         }); 
     };
 
+    //removes all event listeners, symbols, and objects in the board array.
     const resetBoard = () => {
         resetButton = document.querySelector('#reset');
         resetButton.addEventListener('click', e => {
@@ -202,16 +278,17 @@ const gameBoard = (() => {
 //     //eventually add in functions below
 // }
 
+//creates new computer player
 const computerPlayer = Player('Computer', 'O');
+
+//creates new human player
 const humanPlayer = Player('Player', 'X');
+
+
 console.log(computerPlayer);
 console.log(humanPlayer);
+
 gameBoard.gameSetup();
 gameBoard.displayBoard();
 gameBoard.updateBoard();
 gameBoard.resetBoard();
-
-
-//in the future, add in something for someone to play against a computer or with two people.
-//click a single player or mutkuplater button, toggles a variable which changes how it plays
-//Still need to add in draw behavior is computer makes the last move
